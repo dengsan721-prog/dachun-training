@@ -474,6 +474,21 @@ for (const target of ['rawCamp7', 'rawTalent', 'rawOther']) {
   assert(copyStats.total >= 1, `${target} 缺少可见原文卡片复制按钮`);
   assert(lineCopyCount === 0, `${target} 仍有行级复制按钮`);
   if (target === 'rawCamp7') {
+    const campImages = await page.locator('#rawCamp7 .training-image').evaluateAll((links) => links.map((link) => ({
+      src: link.querySelector('img')?.getAttribute('src'),
+      href: link.getAttribute('href'),
+      title: link.closest('.raw-module-card')?.querySelector('h3')?.textContent || ''
+    })));
+    assert(campImages.length === 2, '7天训练营缺少两张案例原图');
+    assert(campImages[0].src === 'assets/camp7-essay.jpg' && campImages[0].title.includes('复制标准流程第1天'), '作文照片未放在开营案例');
+    assert(campImages[1].src === 'assets/camp7-review-example.jpg' && campImages[1].title.includes('第3天'), '点评照片未放在第3天案例');
+    for (const image of await page.locator('#rawCamp7 .training-image img').all()) {
+      await image.scrollIntoViewIfNeeded();
+      await image.evaluate((node) => node.decode());
+      assert(await image.evaluate((node) => node.naturalWidth > 0), '训练营照片加载失败');
+    }
+    assert(campImages.every((image) => image.href === image.src), '训练营照片不能打开原图');
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), '训练营照片导致手机页面横向溢出');
     assert(moduleCount <= 25, `7天训练营模块拆分过细：${moduleCount}`);
     assert(copyStats.noCopyTitles.some((title) => title.includes('说明')), '7天训练营说明卡片复制按钮没有去掉');
     assert(copyStats.noCopyTitles.some((title) => title.includes('请附上实战截图')), '7天训练营截图提示卡片复制按钮没有去掉');

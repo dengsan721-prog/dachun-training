@@ -18,6 +18,13 @@ const boundary = camp?.content.search(/(?:🌲)?《7幸福训练营》复制标�
 if (boundary == null || boundary < 0) throw new Error('Existing camp curriculum boundary not found');
 const standards = camp.content.slice(0, boundary).trimEnd();
 camp.content = standards + '\n\n' + course;
+camp.images = [
+  { src: 'assets/camp7-essay.jpg', alt: '开营案例作文：孤独的我' },
+  { src: 'assets/camp7-review-example.jpg', alt: '第3天点评案例：女儿的孝顺' }
+];
+for (const image of camp.images) {
+  if (!fs.existsSync(path.join(root, image.src))) throw new Error(`Missing image: ${image.src}`);
+}
 const updatedJson = JSON.stringify(manual).replace(/</g, '\\u003c');
 const updatedHtml = html.replace(pattern, () => match[1] + updatedJson + match[3]);
 fs.writeFileSync(pagePath, updatedHtml);
