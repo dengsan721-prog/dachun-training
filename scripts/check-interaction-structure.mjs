@@ -474,6 +474,10 @@ for (const target of ['rawCamp7', 'rawTalent', 'rawOther']) {
   assert(copyStats.total >= 1, `${target} 缺少可见原文卡片复制按钮`);
   assert(lineCopyCount === 0, `${target} 仍有行级复制按钮`);
   if (target === 'rawCamp7') {
+    const campText = await page.locator('#rawCamp7').innerText();
+    assert(!campText.includes('**'), '训练营仍显示无关的星号格式标记');
+    const campCopies = await page.locator('#rawCamp7 [data-copy-text]').evaluateAll((buttons) => buttons.map((button) => button.dataset.copyText));
+    assert(campCopies.every((text) => !text.includes('**')), '训练营复制内容仍有无关的星号');
     const campImages = await page.locator('#rawCamp7 .training-image').evaluateAll((links) => links.map((link) => ({
       src: link.querySelector('img')?.getAttribute('src'),
       href: link.getAttribute('href'),

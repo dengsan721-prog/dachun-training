@@ -2444,7 +2444,7 @@
       (manual.rawMirrorSources || []).forEach((source) => {
         const target = document.getElementById(source.id + 'Rows');
         if (!target) return;
-        const lines = splitDisplayLines(source.content)
+        const lines = splitDisplayLines(source.content.replace(/\*{2,}/g, ''))
           .map((line) => line.trim())
           .filter(Boolean);
         const blocks = buildRawMirrorBlocks(lines, source.title, source.id);
