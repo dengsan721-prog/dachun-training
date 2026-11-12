@@ -1,4 +1,5 @@
 import path from 'node:path';
+import fs from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
 const playwrightPath = process.env.PLAYWRIGHT_PATH || 'C:/Users/Administrator/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright';
@@ -32,6 +33,22 @@ assert(visibleExportLinks === 0, '页面仍显示 Word 或 MD 下载入口');
 const activeWorkspaceStyle = await page.$eval('#workspaceTabs button.active', (button) => getComputedStyle(button).backgroundColor);
 assert(activeWorkspaceStyle !== 'rgb(29, 29, 31)', '大流程/镜子库切换仍是黑色色块');
 
+await page.locator('[data-master-flow-index="3"]').click();
+const systemLearning = JSON.parse(fs.readFileSync(new URL('../data/system-learning.json', import.meta.url), 'utf8'));
+const systemStage = await page.$eval('#flowStagePanel', (root) => ({
+  process: [...root.querySelectorAll('.stage-process li')].map((node) => node.textContent.trim()),
+  title: root.querySelector('.stage-script h4 span')?.textContent,
+  requirements: [...root.querySelectorAll('.stage-script li')].map((node) => node.innerText.replace(/\s+/g, '')),
+  copy: root.querySelector('.stage-script [data-copy-text]')?.dataset.copyText || ''
+}));
+assert(JSON.stringify(systemStage.process) === JSON.stringify(systemLearning.process), '系统学习原话没有完整移到具体流程');
+assert(systemStage.title === '成为幸福教练的要求', '系统学习模块标题没有更新');
+assert(JSON.stringify(systemStage.requirements) === JSON.stringify(systemLearning.script.map((line) => line.replace(/\s+/g, ''))), '幸福教练六项要求或说明显示不完整');
+for (const [index, item] of systemLearning.script.entries()) {
+  assert(systemStage.copy.includes((index + 1) + '. ' + item), '幸福教练要求复制内容遗漏第' + (index + 1) + '项');
+}
+await page.locator('[data-master-flow-index="0"]').click();
+assert(await page.locator('.stage-script h4 span').innerText() === '原话照搬', '其他流程模块的原话照搬标题被修改');
 await page.locator('[data-master-flow-index="2"]').click();
 await page.waitForTimeout(100);
 const campOriginal = await page.$eval('.stage-original', (root) => {
