@@ -13,7 +13,10 @@ function assert(condition, message) {
   }
 }
 
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({
+  headless: true,
+  ...(process.env.PLAYWRIGHT_EXECUTABLE_PATH ? { executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH } : {})
+});
 const page = await browser.newPage({
   viewport: { width: 390, height: 900 },
   deviceScaleFactor: 1,
@@ -74,7 +77,7 @@ assert(JSON.stringify(tabLabels) === JSON.stringify([
   '沙龙话术',
   '人才培养营',
   '市场服务',
-  '总监思维',
+  '领导人思维',
   '工具模型',
   '幸福驾校互动问句',
   '主课互动问句',
@@ -482,8 +485,8 @@ await page.locator('[data-content-target="abilityThinking"]').click();
 const thinking = await page.$eval('#abilityThinking', (root) => ({
   numbers: [...root.querySelectorAll('.thinking-card .salon-step-index')].map((node) => node.textContent.trim())
 }));
-assert(thinking.numbers[0] === '1', '总监思维第一项没有序号 1');
-assert(thinking.numbers.includes('7'), '总监思维没有保留完整序号');
+assert(thinking.numbers[0] === '1', '领导人思维第一项没有序号 1');
+assert(thinking.numbers.includes('7'), '领导人思维没有保留完整序号');
 
 const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1 || document.body.scrollWidth > window.innerWidth + 1);
 assert(!overflow, '390px 手机宽度出现横向溢出');
