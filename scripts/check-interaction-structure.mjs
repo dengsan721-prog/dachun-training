@@ -467,7 +467,7 @@ for (const target of ['rawCamp7', 'rawTalent', 'rawOther']) {
         .filter((card) => !card.querySelector('[data-copy-text]'))
         .map((card) => card.querySelector('.raw-module-title')?.textContent.trim() || ''),
       hasCloseModule: [...root.querySelectorAll('.raw-module-card')]
-        .some((card) => card.textContent.includes('发心心愿拔高') && card.textContent.includes('流程复制要求'))
+        .some((card) => card.textContent.includes('发心心愿拔高') && card.textContent.includes('写出你们的分享稿'))
     };
   });
   const lineCopyCount = await page.locator(`#${target} .raw-line [data-copy-text]`).count();

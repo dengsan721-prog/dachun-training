@@ -13,3 +13,5 @@
 - 降低训练比重，保留轻量通关检查，核心是让流程一眼能看、一搜能找
 
 本仓库与原 `market-service-training` 仓库分开发布。
+
+镜子库的7天训练营课程原文保存在 `data/camp7-course.txt`。修改后运行 `node scripts/update-camp7-content.mjs`，仅同步该模块的课程正文，保留前置服务标准与其他模块。
