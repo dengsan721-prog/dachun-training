@@ -243,7 +243,7 @@ def add_frameworks(doc, data):
         doc.add_heading(f'{item.get("number", "")}. {item.get("title", "")}', level=2)
         doc.add_paragraph(item.get("body", ""))
 
-    doc.add_heading("总监思维", level=1)
+    doc.add_heading("领导人思维", level=1)
     for index, item in enumerate(data.get("directorThinking", []), start=1):
         doc.add_heading(f'{index}. {item.get("title", "")}', level=2)
         doc.add_paragraph(item.get("body", ""))

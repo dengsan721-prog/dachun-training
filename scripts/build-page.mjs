@@ -14,7 +14,7 @@ const assetFiles = [
   },
   {
     key: 'service123456',
-    title: '驿站主市场服务123456（4.0）250903',
+    title: '幸福教练市场服务123456（4.0）250903',
     source: 'C:/Users/Administrator/AppData/Local/Temp/codex-clipboard-713728d1-a101-490c-9375-f7ce0452f107.png',
     file: 'market-service-123456.png'
   },
@@ -75,7 +75,7 @@ const salonScriptTemplates = fs.existsSync(salonScriptTemplateFile)
 const studentGrowthStepFile = path.join(repoRoot, 'data', 'student-growth-steps.json');
 const studentGrowthSteps = fs.existsSync(studentGrowthStepFile)
   ? JSON.parse(fs.readFileSync(studentGrowthStepFile, 'utf8'))
-  : { title: '学员成长四步', modules: [] };
+  : { title: '伙伴成长四步', modules: [] };
 const salonInterviewStandardFile = path.join(repoRoot, 'data', 'salon-interview-standards.json');
 const salonInterviewStandards = fs.existsSync(salonInterviewStandardFile)
   ? JSON.parse(fs.readFileSync(salonInterviewStandardFile, 'utf8'))
@@ -572,19 +572,19 @@ const salonReview = [
 const directorThinking = [
   {
     title: '角色共识',
-    body: '所有人的角色都是受益分享者，不是老师，不是导师，不是大师。总监干三件事：育人才、挖沙子、淘金子；驿站主干两件事：挖沙子、淘金子。'
+    body: '所有人的角色都是受益分享者，不是老师，不是导师，不是大师。领导人干三件事：育人才、挖沙子、淘金子；幸福教练干两件事：挖沙子、淘金子。'
   },
   {
     title: '共同做四件事',
     body: '用锄头：用点评、音频、视频、文字、图片等激活别人，也激活自己。挖沙子：用沙龙育人，也育自己，严格按照标准通关、操作、复盘。造筛子：按照标准发掘榜样，用榜样工具激活更多人行动。淘金子：用行动筛选，任何发出的要求都要有收回动作。'
   },
   {
-    title: '总监育人才三步',
-    body: '前10次约人由总监完成，让筛选出来的伙伴讲，破除邀约恐惧；要求把人讲死，不是讲活，破除担心讲坏的恐惧；讲完用标准复盘，破除随意修改流程标准的行为。'
+    title: '领导人育人才三步',
+    body: '前10次约人由领导人完成，让筛选出来的伙伴讲，破除邀约恐惧；要求把人讲死，不是讲活，破除担心讲坏的恐惧；讲完用标准复盘，破除随意修改流程标准的行为。'
   },
   {
     title: '幸福事业五步',
-    body: '榜样工具邀约来人，幸福沙龙挖沙子淘金子，幸福转念训练营继续筛选，进入平台学习，梦想合并并重复前面三步。'
+    body: '榜样工具邀约来人，幸福沙龙挖沙子淘金子，幸福幸福训练营继续筛选，进入平台学习，梦想合并并重复前面三步。'
   },
   {
     title: '伙伴求助的两个辅导',
@@ -889,7 +889,7 @@ const masterFlow = [
       '有没有行动反馈和帮助别人的意愿？',
       '能不能严格执行流程，不随意发挥？'
     ],
-    source: '对应能力：总监思维与认识、教练招募与严格复制、共同约定。'
+    source: '对应能力：领导人思维与认识、教练招募与严格复制、共同约定。'
   },
   {
     number: '06',
@@ -970,7 +970,7 @@ const modelCollection = {
 
 const toolbox = [
   {
-    title: '驿站主市场服务123456参考图',
+    title: '幸福教练市场服务123456参考图',
     image: 'assets/market-service-123456.png',
     text: '图片保留原参考图，页面上方“市场服务1234567”已按4.0文字内容更新。'
   },
@@ -1180,7 +1180,7 @@ function applyMarkdownOverrides(baseData) {
     camp7Review: mirrorMap.has('7天训练营复盘') ? parseMarkdownList(mirrorMap.get('7天训练营复盘')) : baseData.camp7Review,
     modelCollection: mirrorMap.has('榜样采访') ? parseModelCollectionMarkdown(mirrorMap.get('榜样采访'), baseData.modelCollection) : baseData.modelCollection,
     serviceFramework: mirrorMap.has('市场服务') ? parseFrameworkMarkdown(mirrorMap.get('市场服务'), baseData.serviceFramework) : baseData.serviceFramework,
-    directorThinking: mirrorMap.has('总监思维') ? parseFrameworkMarkdown(mirrorMap.get('总监思维'), baseData.directorThinking, false) : baseData.directorThinking,
+    directorThinking: mirrorMap.has('领导人思维') ? parseFrameworkMarkdown(mirrorMap.get('领导人思维'), baseData.directorThinking, false) : baseData.directorThinking,
     rawMirrorSources: rawRange.length ? parseRawMarkdownSources(rawRange, baseData.rawMirrorSources) : baseData.rawMirrorSources
   };
 }
@@ -2821,21 +2821,21 @@ const html = `<!doctype html>
             <p>镜子库是大流程某一个环节的具体操作。需要哪一步，就切到对应模块，对照流程标准复盘自己有没有按要求执行。</p>
             <div class="content-tabs" id="contentTabs" role="tablist" aria-label="内容库切换">
               <button type="button" class="active" data-content-target="rawSalon">沙龙</button>
+              <button type="button" data-content-target="salonScripts">沙龙话术</button>
               <button type="button" data-content-target="abilitySalonReview">沙龙复盘</button>
               <button type="button" data-content-target="rawCamp7">7天训练营</button>
               <button type="button" data-content-target="abilityCamp7Review">7天训练营复盘</button>
               <button type="button" data-content-target="modelCollection">榜样采访</button>
               <button type="button" data-content-target="salonInterviewStandards">幸福沙龙采访</button>
               <button type="button" data-content-target="rawOther">榜样选拔与教练招募</button>
-              <button type="button" data-content-target="salonScripts">沙龙话术</button>
               <button type="button" data-content-target="rawTalent">人才培养营</button>
               <button type="button" data-content-target="abilityFramework">市场服务</button>
-              <button type="button" data-content-target="abilityThinking">总监思维</button>
+              <button type="button" data-content-target="abilityThinking">领导人思维</button>
               <button type="button" data-content-target="abilityTools">工具模型</button>
-              <button type="button" data-content-target="drivingQuestions">幸福驾校互动问句</button>
+              <button type="button" data-content-target="drivingQuestions">人生六大需求</button>
               <button type="button" data-content-target="mainCourseQuestions">主课互动问句</button>
               <button type="button" data-content-target="therapyQuestions">智疗互动问句</button>
-              <button type="button" data-content-target="studentGrowthSteps">学员成长四步</button>
+              <button type="button" data-content-target="studentGrowthSteps">伙伴成长四步</button>
             </div>
           </div>
         </section>
@@ -2920,15 +2920,15 @@ const html = `<!doctype html>
         <section class="band ability-module-card ability-other content-panel" id="abilityFramework" hidden>
           <div class="band-inner">
             <div class="copy-title-row"><h2>市场服务</h2></div>
-            <p>市场服务123456按结构查看，方便驿站主快速回忆角色、目标、流程、人才和工具。</p>
+            <p>市场服务123456按结构查看，方便幸福教练快速回忆角色、目标、流程、人才和工具。</p>
             <div class="framework-grid" id="frameworkGrid"></div>
           </div>
         </section>
 
         <section class="band ability-module-card ability-other content-panel" id="abilityThinking" hidden>
           <div class="band-inner">
-            <div class="copy-title-row"><h2>总监思维</h2></div>
-            <p>总监和驿站主的分工、心态辅导、顾虑处理、学习效果，单独放在这里照镜子。</p>
+            <div class="copy-title-row"><h2>领导人思维</h2></div>
+            <p>领导人和幸福教练的分工、心态辅导、顾虑处理、学习效果，单独放在这里照镜子。</p>
             <div class="framework-grid" id="thinkingGrid"></div>
           </div>
         </section>
@@ -2943,10 +2943,10 @@ const html = `<!doctype html>
 
         <section class="band ability-module-card question-library-panel content-panel" id="drivingQuestions" hidden>
           <div class="band-inner">
-            <div class="copy-title-row"><h2>幸福驾校互动问句</h2></div>
+            <div class="copy-title-row"><h2>人生六大需求</h2></div>
             <p>只罗列模块和课程标题；点开课程后查看互动问句和作业，复制按钮会把问句与作业一起复制。</p>
             <div class="question-library-toolbar">
-              <input class="question-library-search" type="search" placeholder="搜索课程标题、问句、作业关键词" data-question-search="drivingQuestions" aria-label="搜索幸福驾校互动问句">
+              <input class="question-library-search" type="search" placeholder="搜索课程标题、问句、作业关键词" data-question-search="drivingQuestions" aria-label="搜索人生六大需求">
               <p class="question-library-meta" data-question-meta="drivingQuestions"></p>
             </div>
             <div class="question-module-list" id="drivingQuestionsList"></div>
@@ -2979,8 +2979,8 @@ const html = `<!doctype html>
 
         <section class="band ability-module-card content-panel" id="studentGrowthSteps" hidden>
           <div class="band-inner">
-            <div class="copy-title-row"><h2>学员成长四步</h2></div>
-            <p>按学员成长四步方法论拆成独立模块，重点内容做颜色区分，每个模块可单独复制。</p>
+            <div class="copy-title-row"><h2>伙伴成长四步</h2></div>
+            <p>按伙伴成长四步方法论拆成独立模块，重点内容做颜色区分，每个模块可单独复制。</p>
             <div class="salon-script-body student-growth-list" id="studentGrowthList"></div>
           </div>
         </section>
@@ -3769,7 +3769,7 @@ const html = `<!doctype html>
       const modules = manual.studentGrowthSteps?.modules || [];
       if (!target) return;
       if (!modules.length) {
-        target.innerHTML = '<p class="question-empty">暂无学员成长四步内容</p>';
+        target.innerHTML = '<p class="question-empty">暂无伙伴成长四步内容</p>';
         return;
       }
       target.innerHTML = modules.map((module, index) => {

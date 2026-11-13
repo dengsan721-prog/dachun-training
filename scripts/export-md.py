@@ -148,7 +148,7 @@ def export_markdown(data):
         out.append("")
         add_plain_lines(out, [item.get("body", "")])
 
-    out.extend(["## 总监思维", ""])
+    out.extend(["## 领导人思维", ""])
     for index, item in enumerate(data.get("directorThinking", []), start=1):
         out.append(f'### {index}. {item.get("title", "")}')
         out.append("")

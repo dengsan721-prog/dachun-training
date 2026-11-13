@@ -85,21 +85,21 @@ await page.waitForTimeout(100);
 const tabLabels = await page.$$eval('#contentTabs button', (buttons) => buttons.map((button) => button.textContent.trim()));
 assert(JSON.stringify(tabLabels) === JSON.stringify([
   '沙龙',
+  '沙龙话术',
   '沙龙复盘',
   '7天训练营',
   '7天训练营复盘',
   '榜样采访',
   '幸福沙龙采访',
   '榜样选拔与教练招募',
-  '沙龙话术',
   '人才培养营',
   '市场服务',
   '领导人思维',
   '工具模型',
-  '幸福驾校互动问句',
+  '人生六大需求',
   '主课互动问句',
   '智疗互动问句',
-  '学员成长四步'
+  '伙伴成长四步'
 ]), `镜子库 tab 顺序不正确：${tabLabels.join(' / ')}`);
 assert(tabLabels.includes('榜样选拔与教练招募'), '镜子库缺少“榜样选拔与教练招募”tab');
 assert(tabLabels.includes('市场服务'), '镜子库缺少“市场服务”tab');
@@ -188,7 +188,7 @@ for (const target of ['abilitySalonReview', 'abilityCamp7Review']) {
 }
 
 const questionChecks = [
-  { target: 'drivingQuestions', keyword: '叛逆', minCourses: 70 },
+  { target: 'drivingQuestions', keyword: '叛逆', minCourses: 30 },
   { target: 'mainCourseQuestions', keyword: '疾病', minCourses: 190 },
   { target: 'therapyQuestions', keyword: '减肥', minCourses: 140 }
 ];
@@ -208,6 +208,11 @@ for (const check of questionChecks) {
   }));
   assert(stats.moduleCount >= 1, `${check.target} 没有模块`);
   assert(stats.courseCount >= check.minCourses, `${check.target} 课程数量不足：${stats.courseCount}`);
+  if (check.target === 'drivingQuestions') {
+    assert(stats.moduleCount === 6 && stats.courseCount === 30, '人生六大需求应保留六个模块和30课');
+    const moduleTitles = await page.locator('#drivingQuestions .question-module-head h3').allTextContents();
+    assert(!moduleTitles.includes('幸福榜样'), '人生六大需求仍显示已移除的幸福榜样模块');
+  }
   assert(stats.searchCount === 1, `${check.target} 搜索框数量不正确`);
   assert(stats.lineCopyCount === 0, `${check.target} 出现行级复制按钮`);
   assert(stats.courseCopyCount === stats.courseCount, `${check.target} 课程级复制按钮数量不正确`);
@@ -249,16 +254,16 @@ const studentGrowth = await page.$eval('#studentGrowthSteps', (root) => ({
     .slice(0, 4)
     .map((card) => getComputedStyle(card).borderLeftColor)
 }));
-assert(studentGrowth.title === '学员成长四步', '学员成长四步标题不正确');
-assert(studentGrowth.stepCount === 5, `学员成长四步模块数量不正确：${studentGrowth.stepCount}`);
-assert(studentGrowth.copyCount === 5, `学员成长四步复制按钮数量不正确：${studentGrowth.copyCount}`);
-assert(studentGrowth.firstCopyText.includes('第一步，激活主动性') && studentGrowth.firstCopyText.includes('核心逻辑是学员参与度决定改变效率'), '学员成长四步第一步复制内容不完整');
-assert(studentGrowth.hasCoreTone, '学员成长四步缺少核心底色模块');
-assert(studentGrowth.markedLineTypes.includes('formula'), '学员成长四步缺少重点色块标注');
-assert(!['auto', 'scroll'].includes(studentGrowth.firstContentOverflowY), `学员成长四步正文仍存在内部滚动：${studentGrowth.firstContentOverflowY}`);
-assert(Math.abs(parseFloat(studentGrowth.titleFontSize) - parseFloat(studentGrowth.lineFontSize)) <= 1.5, `学员成长四步标题和正文不协调：${studentGrowth.titleFontSize} / ${studentGrowth.lineFontSize}`);
-assert(parseFloat(studentGrowth.lineHeight) <= 23, `学员成长四步正文行高占位过大：${studentGrowth.lineHeight}`);
-assert(new Set(studentGrowth.accentSamples).size >= 2, '学员成长四步模块没有颜色区分');
+assert(studentGrowth.title === '伙伴成长四步', '伙伴成长四步标题不正确');
+assert(studentGrowth.stepCount === 5, `伙伴成长四步模块数量不正确：${studentGrowth.stepCount}`);
+assert(studentGrowth.copyCount === 5, `伙伴成长四步复制按钮数量不正确：${studentGrowth.copyCount}`);
+assert(studentGrowth.firstCopyText.includes('第一步，激活主动性') && studentGrowth.firstCopyText.includes('核心逻辑是学员参与度决定改变效率'), '伙伴成长四步第一步复制内容不完整');
+assert(studentGrowth.hasCoreTone, '伙伴成长四步缺少核心底色模块');
+assert(studentGrowth.markedLineTypes.includes('formula'), '伙伴成长四步缺少重点色块标注');
+assert(!['auto', 'scroll'].includes(studentGrowth.firstContentOverflowY), `伙伴成长四步正文仍存在内部滚动：${studentGrowth.firstContentOverflowY}`);
+assert(Math.abs(parseFloat(studentGrowth.titleFontSize) - parseFloat(studentGrowth.lineFontSize)) <= 1.5, `伙伴成长四步标题和正文不协调：${studentGrowth.titleFontSize} / ${studentGrowth.lineFontSize}`);
+assert(parseFloat(studentGrowth.lineHeight) <= 23, `伙伴成长四步正文行高占位过大：${studentGrowth.lineHeight}`);
+assert(new Set(studentGrowth.accentSamples).size >= 2, '伙伴成长四步模块没有颜色区分');
 
 await page.locator('[data-content-target="salonInterviewStandards"]').click();
 await page.waitForTimeout(100);
@@ -360,7 +365,7 @@ assert(!modelCards.gridColumns.includes(' '), '榜样采访步骤仍是多列网
 const mirrorCardChecks = [
   { target: 'abilityFramework', card: '.framework-card', copy: '.mirror-card-copy', min: 7, marker: '一个服务理念' },
   { target: 'abilityThinking', card: '.thinking-card', copy: '.mirror-card-copy', min: 7, marker: '角色共识' },
-  { target: 'abilityTools', card: '.tool-card', copy: '.tool-copy', min: 4, marker: '驿站主市场服务123456参考图' }
+  { target: 'abilityTools', card: '.tool-card', copy: '.tool-copy', min: 4, marker: '幸福教练市场服务123456参考图' }
 ];
 
 for (const check of mirrorCardChecks) {
